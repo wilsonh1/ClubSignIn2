@@ -3,10 +3,9 @@
 const {GoogleSpreadsheet} = require('google-spreadsheet');
 
 const master = new GoogleSpreadsheet('1shsiUiuHNYQUPF_LgiHKAJHAW0TcsOMXncNRDvNlIes');
+var clubs;
 
-var sheet;
-
-(async function authorize() {
+(async function init () {
     await master.useServiceAccountAuth({
         client_email: process.env.CLIENT_EMAIL,
         private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n')
@@ -14,7 +13,9 @@ var sheet;
 
     await master.loadInfo();
 
-    sheet = master.sheetsByIndex[0];
+    clubs = master.sheetsByIndex[0];
+    
+    await new Promise(r => setTimeout(r, 20000));
 })();
 
 const
@@ -33,7 +34,7 @@ app.post('/webhook', (req, res) => {
         body.entry.forEach(function(entry) {
             entry.messaging.forEach(function(event) {
                 if (event.message)
-                    console.log(sheet.title);
+                    console.log(clubs.title);
                     //processMessage(event);
             });
         });
@@ -43,7 +44,7 @@ app.post('/webhook', (req, res) => {
 });
 
 app.get("/", function (req, res) {
-    res.send("Deployed!");
+    res.send("deployed");
 });
 
 app.get('/webhook', (req, res) => {

@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/wilsonh1/ClubSignIn2#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "google-spreadsheet": "^3.0.13",
-    "mongoose": "^5.10.5"
+    "request": "^2.88.2"
   }
 }

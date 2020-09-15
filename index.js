@@ -13,9 +13,8 @@ var clubs;
 
     await master.loadInfo();
 
-    clubs = master.sheetsByIndex[0];
-    
     await new Promise(r => setTimeout(r, 20000));
+    clubs = master.sheetsByIndex[0];
 })();
 
 const

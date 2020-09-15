@@ -1,0 +1,23 @@
+{
+  "name": "clubsignin2",
+  "version": "1.0.0",
+  "description": "club attendance messenger bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wilsonh1/ClubSignIn2.git"
+  },
+  "author": "Wilson Ho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wilsonh1/ClubSignIn2/issues"
+  },
+  "homepage": "https://github.com/wilsonh1/ClubSignIn2#readme",
+  "dependencies": {
+    "google-spreadsheet": "^3.0.13",
+    "mongoose": "^5.10.5"
+  }
+}

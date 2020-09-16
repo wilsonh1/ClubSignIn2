@@ -3,7 +3,7 @@
 const {GoogleSpreadsheet} = require('google-spreadsheet');
 
 const master = new GoogleSpreadsheet('1shsiUiuHNYQUPF_LgiHKAJHAW0TcsOMXncNRDvNlIes');
-var clubs;
+var rows, clubs = {}, flag = 0;
 
 (async function init () {
     await master.useServiceAccountAuth({
@@ -12,8 +12,9 @@ var clubs;
     });
 
     await master.loadInfo();
+    const sheet = master.sheetsByIndex[0];
+    rows = await sheet.getRows();
 
-    await new Promise(r => setTimeout(r, 20000));
     clubs = master.sheetsByIndex[0];
 })();
 
@@ -25,7 +26,7 @@ const
 
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
-app.post('/webhook', (req, res) => {
+app.post('/webhook', function (req, res) {
     let body = req.body;
 
     if (body.object === 'page') {
@@ -46,7 +47,7 @@ app.get("/", function (req, res) {
     res.send("deployed");
 });
 
-app.get('/webhook', (req, res) => {
+app.get('/webhook', function (req, res) {
     const VERIFY_TOKEN = process.env.VERIFICATION_TOKEN;
 
     let mode = req.query['hub.mode'];
@@ -62,3 +63,5 @@ app.get('/webhook', (req, res) => {
         }
     }
 });
+
+// if sheet is undefined, "Bot is waking up, please try again in a few seconds."

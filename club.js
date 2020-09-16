@@ -2,6 +2,7 @@
 
 const {GoogleSpreadsheet} = require('google-spreadsheet');
 const fields = ['pwd', 'sheet', 'client_email', 'private_key'];
+const member = ['email', 'grade', 'total']
 
 class Club {
     constructor (pwd, admin, sheet, client, pkey) {
@@ -25,7 +26,7 @@ class Club {
         this.loadRows(callback);
     }
 
-    updateAdmin (pwd, uid) {
+    updateAdmin (uid, pwd) {
         if (pwd != this.pwd)
             return 0;
         this.admin = uid;
@@ -82,7 +83,7 @@ class Club {
         if (pwd != this.pwd)
             return 0;
         if (this.keys.includes(key))
-            return 1;
+            return 2;
 
         this.col = this.nextCol(this.col);
         this.keys.push(key);
@@ -94,14 +95,14 @@ class Club {
         this.sheet.getCellByA1(this.col + '3').formula = '=sum(' + this.col + '4:' + this.col + ')';
         await this.sheet.saveUpdatedCells();
 
-        return 2;
+        return 1;
     }
 
     async updateMember (uid, field, val) {
         let i = this.ids.indexOf(uid);
         if (i == -1)
             return 0;
-        if (field == 'email' || field == 'grade') {
+        if (member.includes(field)) {
             this.rows[i][field] = val;
             await this.rows[i].save();
             return 1;
@@ -109,18 +110,18 @@ class Club {
         return 2;
     }
 
-    async queryMember (uid, field) {
+    queryMember (uid, field) {
         let i = this.ids.indexOf(uid);
         if (i == -1)
             return 0;
-        if (field == 'emai' || field == 'grade')
+        if (member.includes(field))
             return this.rows[i][field] = val;
         return 2;
     }
 
     async signIn (uid, key, name) {
         if (key != this.keys[this.keys.length - 1])
-            return 0;
+            return 2;
 
         let i = this.ids.indexOf(uid), n;
         if (i == -1) {
@@ -128,6 +129,7 @@ class Club {
             n = nrow._rowNumber;
             nrow.total = '=sum(F' + n + ':Z' + n + ')';
             await nrow.save();
+            this.ids.push(uid);
             this.rows.push(nrow);
         } else
             n = this.rows[i]._rowNumber;
@@ -135,10 +137,11 @@ class Club {
         await this.sheet.loadCells(this.col + n);
         let cell = this.sheet.getCellByA1(this.col + n);
         if (cell.value)
-            return 2;
+            return 3;
         cell.value = 1;
         await this.sheet.saveUpdatedCells();
 
+        console.log(uid);
         return (i == -1);
     }
 }

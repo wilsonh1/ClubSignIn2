@@ -42,16 +42,63 @@ var rows, clubs = {};
     clubs['test'].updateKey('0MnG3xnbqO', 'test2');*/
 
     clubs['test'].updateKey('0MnG3xnbqO', 'test').then(console.log);
-    clubs['test'].signIn('1', 'test', 'Wilson Ho').then(console.log);
+    /*clubs['test'].signIn('1', 'test', 'Wilson Ho').then(console.log);
     clubs['test'].signIn('2', 'test', 'Ho Wilson').then(console.log);
+    clubs['test'].signIn('3', 'test', 'Ho Wilson').then(console.log);
+    clubs['test'].signIn('4', 'test', 'Ho Wilson').then(console.log);
+    clubs['test'].signIn('5', 'test', 'Ho Wilson').then(console.log);*/
+
+    queueRequest({uid: '1', key: 'test', name: 'Wilson Ho'});
+    queueRequest({uid: '2', key: 'test', name: 'Wilson Ho'});
+    queueRequest({uid: '3', key: 'test', name: 'Wilson Ho'});
+    queueRequest({uid: '4', key: 'test', name: 'Wilson Ho'});
+    queueRequest({uid: '5', key: 'test', name: 'Wilson Ho'});
+    queueRequest({uid: '6', key: 'test', name: 'Wilson Ho'});
 })();
 
-async function updateMaster (cid, pwd, field, val) {
-    if (clubs[cid].updateClub(pwd, field, val) == 1) {
-        let i = 0;
-        while (rows[i]['Club ID'] != cid)
-            i++;
-        rows[i][field] = val;
-        await rows[i].save();
+async function updateMaster (cid, uid, field, val) {
+    let i = Object.keys(clubs).indexOf(cid);
+    if (i == -1)
+        return 0;
+
+    if (field == 'admin') {
+        if (clubs[cid].updateAdmin(uid, val)) {
+            rows[i].admin = uid;
+            await rows[i].save();
+            return 1;
+        }
+        return 2;
+    } else {
+        let up = clubs[cid].updateClub(pwd, field, val);
+        if (up == 1) {
+            rows[i][field] = val;
+            await rows[i].save();
+            return 1;
+        }
+        return up
     }
+}
+
+var queue = []
+var processing = false;
+
+function queueRequest (request) {
+    queue.push(request);
+    if (processing)
+        return;
+    console.log('qr');
+    processing = true;
+    processQueue();
+}
+
+function processQueue () {
+    if (!queue.length) {
+        processing = false;
+        return;
+    }
+    let request = queue.shift();
+    clubs['test'].signIn(request.uid, request.key, request.name).then(function(value) {
+        console.log(value);
+        processQueue()
+    });
 }

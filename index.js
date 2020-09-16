@@ -1,8 +1,9 @@
 'use strict';
 
 const {GoogleSpreadsheet} = require('google-spreadsheet');
+const Club = require('./club.js');
 
-const master = new GoogleSpreadsheet('1shsiUiuHNYQUPF_LgiHKAJHAW0TcsOMXncNRDvNlIes');
+const master = new GoogleSpreadsheet(process.env.SHEET_ID);
 var rows, clubs = {}, flag = 0;
 
 (async function init () {

@@ -1,7 +1,7 @@
 'use strict';
 
 const {GoogleSpreadsheet} = require('google-spreadsheet');
-const fields = ['pwd', 'admin', 'sheet', 'client_email', 'private_key'];
+const fields = ['pwd', 'sheet', 'client_email', 'private_key'];
 
 class Club {
     constructor (pwd, admin, sheet, client, pkey) {
@@ -25,13 +25,27 @@ class Club {
         this.loadRows(callback);
     }
 
-    updateClub (pwd, field, val) {
+    updateAdmin (pwd, uid) {
         if (pwd != this.pwd)
+            return 0;
+        this.admin = uid;
+    }
+
+    updateClub (uid, field, val) {
+        if (uid != this.admin)
             return 0;
         if (fields.include(field)) {
             this[field] = val;
             return 1;
         }
+        return 2;
+    }
+
+    queryClub (uid, field, val) {
+        if (uid != this.admin)
+            return 0;
+        if (fields.include(field))
+            return this[field];
         return 2;
     }
 
@@ -87,7 +101,7 @@ class Club {
         let i = this.ids.indexOf(uid);
         if (i == -1)
             return 0;
-        if (field == 'emai' || field == 'grade') {
+        if (field == 'email' || field == 'grade') {
             this.rows[i][field] = val;
             await this.rows[i].save();
             return 1;
@@ -112,7 +126,7 @@ class Club {
         if (i == -1) {
             let nrow = await this.sheet.addRow({'User ID': uid, 'Name': name});
             n = nrow._rowNumber;
-            nrow.Total = '=sum(F' + n + ':Z' + n + ')';
+            nrow.total = '=sum(F' + n + ':Z' + n + ')';
             await nrow.save();
             this.rows.push(nrow);
         } else

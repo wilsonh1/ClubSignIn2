@@ -3,6 +3,11 @@
 ## Setup
 
 - Google sheets API service account:
+    - Go to [console.developers.google.com](console.developers.google.com).
+    - Create a new project and enable the Google Sheets API.
+    - Under Credentials, create a new service account with Editor access.
+    - Under this service account, create a new key.
+    - Send me the JSON file containing the account credentials.
 
 - Attendance sheet:
     - Create a copy of [example](https://docs.google.com/spreadsheets/d/1SQ-KhCJfa8mjXTG9EQ3gLa5h1CCn-Wyae8wl4KhuS_M/edit?usp=sharing).

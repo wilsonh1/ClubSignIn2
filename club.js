@@ -109,7 +109,7 @@ class Club {
         let i = this.ids.indexOf(uid);
         if (i == -1)
             return 0;
-        return this.rows[i][field] = val;
+        return this.rows[i][field];
     }
 
     async signIn (uid, key, name) {

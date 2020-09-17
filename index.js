@@ -292,7 +292,7 @@ function getMessage (mid, event, callback) {
             console.log("Error getting user's name: " +  err);
         else {
             let bodyObj = JSON.parse(body);
-            event.message.text = body.message;
+            event.message.text = bodyObj.message;
             delete event.message.reply_to;
             console.log(event);
             callback(event);

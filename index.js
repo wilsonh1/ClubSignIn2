@@ -103,6 +103,13 @@ function processMessage (event) {
             }
             return;
         }
+        if (str[0] == 'retry') {
+            if (!message.reply_to.mid)
+                sendMessage(uid, "Reply to the message you wish to retry.");
+            else
+                getMessage(message.reply_to.mid, event, (e) => processMessage(e));
+            return;
+        }
 
         const member = ['email', 'grade', 'total']
         const admin = ['pwd', 'sheet', 'client_email', 'private_key'];
@@ -136,11 +143,6 @@ function processMessage (event) {
                 sendMessage(uid, notRecognized);
         } else if (str[0] == 'readmin') {
             queueRequest({command: 6, cid: cid, uid: uid, args: [orig[2]]});
-        } else if (str[0] == 'retry') {
-            if (!message.reply_to.mid)
-                sendMessage(uid, "Reply to the message you wish to retry.");
-            else
-                getMessage(message.reply_to.mid, event, (e) => processMessage(e));
         } else {
             sendMessage(uid, notRecognized);
         }

@@ -28,6 +28,7 @@ class Club {
         if (pwd != this.pwd)
             return 0;
         this.admin = uid;
+        return 1;
     }
 
     updateClub (uid, field, val) {

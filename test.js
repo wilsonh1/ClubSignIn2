@@ -42,6 +42,7 @@ var rows, clubs = {}, cids = [];
     /*clubs['test'].updateKey('0MnG3xnbqO', 'test');
     clubs['test'].updateKey('0MnG3xnbqO', 'test2');*/
 
+    console.log(clubs['test'].updateAdmin(1, '0MnG3xnbqO'));
     clubs['test'].updateKey(1, 'test').then(console.log);
     /*clubs['test'].signIn('1', 'test', 'Wilson Ho').then(console.log);
     clubs['test'].signIn('2', 'test', 'Ho Wilson').then(console.log);

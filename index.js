@@ -255,7 +255,7 @@ async function updateMaster (cid, field, val) {
 
 function getName (uid, callback) {
     request({
-        url: "https://graph.facebook.com/v8.0/" + senderId,
+        url: "https://graph.facebook.com/v8.0/" + uid,
         qs: {
             access_token: process.env.PAGE_ACCESS_TOKEN,
             fields: "name"

@@ -122,7 +122,7 @@ function processMessage (event) {
         } else if (str[0] == 'check') {
             if (member.includes(str[2]))
                 queueRequest({command: 3, cid: cid, uid: uid, args: [str[2]]});
-            else if (admin.includes(str[2]))
+            else if (str[2] == 'key' || admin.includes(str[2]))
                 queueRequest({command: 4, cid: cid, uid: uid, args: [str[2]]});
             else
                 sendMessage(uid, notRecognized);
@@ -151,6 +151,7 @@ function processQueue () {
     }
 
     let r = queue.shift;
+    console.log(r);
     switch(r.command) {
         case 0: {
             getName(uid, function(name) {

@@ -6,8 +6,6 @@
         "check [club id] email",
         "check [club id] grade",
         "check [club id] total",
-        "check [club id] total",
-        "check [club id] total",
         "all commands: full help"
     ],
     "admin": [

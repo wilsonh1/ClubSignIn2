@@ -23,5 +23,5 @@
         "check [club id] key",
         "all commands: full help"
     ],
-    "full": ["For a full list of commands, go to https://github.com/wilsonh1/ClubSignIn2/blob/master/commands.md"];
+    "full": ["For a full list of commands, go to https://github.com/wilsonh1/ClubSignIn2/blob/master/commands.md"]
 }

@@ -129,7 +129,7 @@ function processMessage (event) {
             else
                 sendMessage(uid, notRecognized);
         } else if (str[0] == 'readmin') {
-            queueRequest({command: 6, uid: uid, args: [str[2]]});
+            queueRequest({command: 6, cid: cid, uid: uid, args: [str[2]]});
         } else {
             sendMessage(uid, notRecognized);
         }

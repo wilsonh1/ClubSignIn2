@@ -23,6 +23,7 @@
         - Sheet ID: `update [club id] sheet [sheet id]`
         - Client email: `update [club id] client_email [address]`
         - Private key: `update [club id] private_key [key]`
+        - If you need to update your service account, also send me the JSON file with the new credentials.
     - Sign in key: `update [club id] key [key]`
         - Updating the sign in key will create a new column in the sheet. Header includes the key, date, and meeting total.
         - Keys must be unique for each meeting. Do not include any spaces in your key.
@@ -34,6 +35,7 @@
     - Sign in key: `check [club id] key`
 
 ## Help
-- Send `member help` for the list of member commands
-- Send `admin help` for the list of admin commands
+- Send `clubs` for a list of club IDs.
+- Send `member help` for a list of member commands
+- Send `admin help` for a list of admin commands
 - Send `full help` for a link to this page

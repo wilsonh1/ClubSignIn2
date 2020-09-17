@@ -41,7 +41,7 @@ var rows, clubs = {};
     /*clubs['test'].updateKey('0MnG3xnbqO', 'test');
     clubs['test'].updateKey('0MnG3xnbqO', 'test2');*/
 
-    clubs['test'].updateKey('0MnG3xnbqO', 'test').then(console.log);
+    clubs['test'].updateKey(1, 'test').then(console.log);
     /*clubs['test'].signIn('1', 'test', 'Wilson Ho').then(console.log);
     clubs['test'].signIn('2', 'test', 'Ho Wilson').then(console.log);
     clubs['test'].signIn('3', 'test', 'Ho Wilson').then(console.log);
@@ -50,33 +50,16 @@ var rows, clubs = {};
 
     queueRequest({uid: '1', key: 'test', name: 'Wilson Ho'});
     queueRequest({uid: '2', key: 'test', name: 'Wilson Ho'});
-    queueRequest({uid: '3', key: 'test', name: 'Wilson Ho'});
+    queueRequest('test');
     queueRequest({uid: '4', key: 'test', name: 'Wilson Ho'});
     queueRequest({uid: '5', key: 'test', name: 'Wilson Ho'});
     queueRequest({uid: '6', key: 'test', name: 'Wilson Ho'});
 })();
 
 async function updateMaster (cid, uid, field, val) {
-    let i = Object.keys(clubs).indexOf(cid);
-    if (i == -1)
-        return 0;
-
-    if (field == 'admin') {
-        if (clubs[cid].updateAdmin(uid, val)) {
-            rows[i].admin = uid;
-            await rows[i].save();
-            return 1;
-        }
-        return 2;
-    } else {
-        let up = clubs[cid].updateClub(pwd, field, val);
-        if (up == 1) {
-            rows[i][field] = val;
-            await rows[i].save();
-            return 1;
-        }
-        return up
-    }
+    rows[0]['admin'] = 0;
+    await rows[0].save();
+    return true;
 }
 
 var queue = []
@@ -97,8 +80,15 @@ function processQueue () {
         return;
     }
     let request = queue.shift();
+    if (request == 'test') {
+        updateMaster(1, 1, 1, 1).then((value) => {
+            console.log("a");
+            processQueue();
+        })
+        return;
+    }
     clubs['test'].signIn(request.uid, request.key, request.name).then(function(value) {
-        console.log(value);
+        console.log(request.uid + ' ' + value);
         processQueue()
     });
 }

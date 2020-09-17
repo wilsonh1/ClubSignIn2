@@ -1,0 +1,27 @@
+{
+    "member": [
+        "*sign in*: ![club id] [key]",
+        "update [club id] email [address]",
+        "update [club id] grade [#]",
+        "check [club id] email",
+        "check [club id] grade",
+        "check [club id] total",
+        "check [club id] total",
+        "check [club id] total",
+        "all commands: full help"
+    ],
+    "admin": [
+        "readmin [club id] [password]",
+        "update [club id] pwd [new password]",
+        "update [club id] sheet [sheet id]",
+        "update [club id] client_email [address]",
+        "update [club id] private_key [key]",
+        "update [club id] key [key]",
+        "check [club id] pwd",
+        "check [club id] sheet",
+        "check [club id] client_email",
+        "check [club id] key",
+        "all commands: full help"
+    ],
+    "full": ["For a full list of commands, go to https://github.com/wilsonh1/ClubSignIn2/blob/master/commands.md"];
+}

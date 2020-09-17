@@ -1,8 +1,6 @@
 'use strict';
 
 const {GoogleSpreadsheet} = require('google-spreadsheet');
-const fields = ['pwd', 'sheet', 'client_email', 'private_key'];
-const member = ['email', 'grade', 'total']
 
 class Club {
     constructor (pwd, admin, sheet, client, pkey) {
@@ -35,19 +33,14 @@ class Club {
     updateClub (uid, field, val) {
         if (uid != this.admin)
             return 0;
-        if (fields.include(field)) {
-            this[field] = val;
-            return 1;
-        }
-        return 2;
+        this[field] = val;
+        return 1;
     }
 
-    queryClub (uid, field, val) {
+    queryClub (uid, field) {
         if (uid != this.admin)
             return 0;
-        if (fields.include(field))
-            return this[field];
-        return 2;
+        return this[field];
     }
 
     nextCol (c) {
@@ -63,7 +56,6 @@ class Club {
             col = this.nextCol(col);
         }
 
-        console.log(col);
         this.col = col;
         this.keys.push(this.sheet.getCellByA1(col + '1').value);
 
@@ -79,8 +71,8 @@ class Club {
         callback();
     }
 
-    async updateKey (pwd, key) {
-        if (pwd != this.pwd)
+    async updateKey (uid, key) {
+        if (uid != this.admin)
             return 0;
         if (this.keys.includes(key))
             return 2;
@@ -102,21 +94,16 @@ class Club {
         let i = this.ids.indexOf(uid);
         if (i == -1)
             return 0;
-        if (member.includes(field)) {
-            this.rows[i][field] = val;
-            await this.rows[i].save();
-            return 1;
-        }
-        return 2;
+        this.rows[i][field] = val;
+        await this.rows[i].save();
+        return 1;
     }
 
     queryMember (uid, field) {
         let i = this.ids.indexOf(uid);
         if (i == -1)
             return 0;
-        if (member.includes(field))
-            return this.rows[i][field] = val;
-        return 2;
+        return this.rows[i][field] = val;
     }
 
     async signIn (uid, key, name) {

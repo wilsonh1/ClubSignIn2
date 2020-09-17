@@ -85,8 +85,6 @@ function processMessage (event) {
 
     if (!message.text)
         sendMessage(uid, notRecognized);
-    else if (message.reply_to)
-        console.log(message.reply_to.mid);
     else {
         let str = message.text.toLowerCase().split(' ');
         let orig = message.text.split(' ');
@@ -138,6 +136,11 @@ function processMessage (event) {
                 sendMessage(uid, notRecognized);
         } else if (str[0] == 'readmin') {
             queueRequest({command: 6, cid: cid, uid: uid, args: [orig[2]]});
+        } else if (str[0] == 'retry') {
+            if (!message.reply_to.mid)
+                sendMessage(uid, "Reply to the message you wish to retry.");
+            else
+                getMessage(message.reply_to.mid, event, (e) => processMessage(e));
         } else {
             sendMessage(uid, notRecognized);
         }
@@ -270,6 +273,27 @@ function getName (uid, callback) {
         else {
             let bodyObj = JSON.parse(body);
             callback(bodyObj.name);
+        }
+    });
+}
+
+function getMessage (mid, event, callback) {
+    request({
+        url: "https://graph.facebook.com/v8.0/" + mid,
+        qs: {
+            access_token: process.env.PAGE_ACCESS_TOKEN,
+            fields: "message"
+        },
+        method: "GET"
+    }, function (err, response, body) {
+        if (err)
+            console.log("Error getting user's name: " +  err);
+        else {
+            let bodyObj = JSON.parse(body);
+            event.message.text = body.message;
+            delete event.message.reply_to;
+            console.log(event);
+            callback(event);
         }
     });
 }

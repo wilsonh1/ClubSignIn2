@@ -1,6 +1,7 @@
 # Commands
 - Replace keywords in brackets. Do not include brackets in your message.
 - All commands are not case-sensitive.
+- Reply to a message with `retry` to retry that command.
 
 ## Members
 - Sign in: `![club id] [key]`

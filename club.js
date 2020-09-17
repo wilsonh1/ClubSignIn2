@@ -25,6 +25,7 @@ class Club {
     }
 
     updateAdmin (uid, pwd) {
+        console.log(this.pwd);
         if (pwd != this.pwd)
             return 0;
         this.admin = uid;

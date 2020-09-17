@@ -84,7 +84,8 @@ function processMessage (event) {
     if (!message.text)
         sendMessage(uid, notRecognized);
     else {
-        let str = message.text.toLowerCase().split(" ");
+        let str = message.text.toLowerCase().split(' ');
+        let orig = message.text.split(' ');
 
         if (str[0] == 'clubs') {
             for (let i = 0; i < cids.length; i++)
@@ -105,7 +106,9 @@ function processMessage (event) {
         const admin = ['pwd', 'sheet', 'client_email', 'private_key'];
 
         let cid = (str[0][0] == '!') ? str[0].substring(1) : str[1];
-        if (!cids.includes(cid)) {
+        if (!cid) {
+            sendMessage(uid, notRecognized);
+        } else if (!cids.includes(cid)) {
             sendMessage(uid, 'Club ID not recognized. Send "clubs" for a list of club IDs.');
             return;
         }
@@ -114,11 +117,11 @@ function processMessage (event) {
             queueRequest({command: 0, cid: cid, uid: uid, args: [str[1]]});
         } else if (str[0] == 'update') {
             if (member.includes(str[2]) && str[2] != 'total')
-                queueRequest({command: 1, cid: cid, uid: uid, args: [str[2], str[3]]});
+                queueRequest({command: 1, cid: cid, uid: uid, args: [str[2], orig[3]]});
             else if (admin.includes(str[2]))
-                queueRequest({command: 2, cid: cid, uid: uid, args: [str[2], str[3]]});
+                queueRequest({command: 2, cid: cid, uid: uid, args: [str[2], orig[3]]});
             else if (str[2] == 'key')
-                queueRequest({command: 3, cid: cid, uid: uid, args: [str[3]]});
+                queueRequest({command: 3, cid: cid, uid: uid, args: [orig[3]]});
             else
                 sendMessage(uid, notRecognized);
         } else if (str[0] == 'check') {
@@ -129,7 +132,7 @@ function processMessage (event) {
             else
                 sendMessage(uid, notRecognized);
         } else if (str[0] == 'readmin') {
-            queueRequest({command: 6, cid: cid, uid: uid, args: [str[2]]});
+            queueRequest({command: 6, cid: cid, uid: uid, args: [orig[2]]});
         } else {
             sendMessage(uid, notRecognized);
         }

@@ -226,6 +226,7 @@ function processQueue () {
         } break;
         case 6: {
             let up = clubs[r.cid].updateAdmin(r.uid, r.args[0]);
+            console.log(up + ' ' + r.args[0]);
             if (!up) {
                 sendMessage(r.uid, 'Invalid club password.');
                 processQueue();

@@ -99,6 +99,8 @@ class Club {
         if (i == -1)
             return 0;
         this.rows[i][field] = val;
+        let n = this.rows[i]._rowNumber;
+        this.rows[i].total = '=sum(F' + n + ':Z' + n + ')';
         await this.rows[i].save();
         return 1;
     }
@@ -133,7 +135,7 @@ class Club {
         await this.sheet.saveUpdatedCells();
 
         console.log(uid);
-        return (i == -1);
+        return (i == -1) ? 1 : 0;
     }
 }
 

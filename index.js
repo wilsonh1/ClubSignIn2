@@ -74,6 +74,7 @@ function processMessage (event) {
         return;
     let uid = event.sender.id, message = event.message;
 
+    console.log(flag);
     if (flag != rows.length * 2) {
         sendMessage(uid, 'Bot is waking up, please try again in a few seconds.')
         return;

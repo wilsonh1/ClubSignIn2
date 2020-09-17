@@ -2,7 +2,7 @@
 
 ## Setup
 - Google sheets API service account:
-    - Go to [console.developers.google.com](console.developers.google.com).
+    - Go to [console.developers.google.com](https://console.developers.google.com/).
     - Create a new project and enable the Google Sheets API.
     - Under Credentials, create a new service account with Editor access.
     - Under this service account, create a new key.

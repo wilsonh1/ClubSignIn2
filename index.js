@@ -164,6 +164,7 @@ function processQueue () {
         case 0: {
             getName(r.uid, function(name) {
                 clubs[r.cid].signIn(r.uid, r.args[0], name).then(function(ret) {
+                    console.log(ret);
                     switch(ret) {
                         case 0:
                             sendMessage(r.uid, '(Y)');

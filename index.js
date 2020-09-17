@@ -104,7 +104,7 @@ function processMessage (event) {
             return;
         }
         if (str[0] == 'retry') {
-            if (!message.reply_to.mid)
+            if (!message.reply_to)
                 sendMessage(uid, "Reply to the message you wish to retry.");
             else
                 getMessage(message.reply_to.mid, event, (e) => processMessage(e));

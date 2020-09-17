@@ -6,7 +6,7 @@ const Club = require('./club.js');
 const keys = require('./keys/clubsignin2-291f28402623.json');
 
 const master = new GoogleSpreadsheet('1shsiUiuHNYQUPF_LgiHKAJHAW0TcsOMXncNRDvNlIes');
-var rows, clubs = {};
+var rows, clubs = {}, cids = [];
 
 (async function init () {
     await master.useServiceAccountAuth({
@@ -27,14 +27,15 @@ var rows, clubs = {};
     let flag = 0;
     for (let i = 0; i < rows.length; i++) {
         clubs[rows[i]['Club ID']] = new Club(rows[i].pwd, rows[i].admin, rows[i].sheet, rows[i].client_email, rows[i].private_key);
-        clubs[rows[i]['Club ID']].authorize(function() {
-            flag++;
-        });
+        clubs[rows[i]['Club ID']].authorize(() => flag++);
+        cids.push(rows[i]['Club ID']);
     }
 
     await new Promise(r => setTimeout(r, 5000));
     console.log(flag);
 
+
+    console.log(cids);
     //clubs['test'].test();
     //clubs['test2'].test();
 

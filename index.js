@@ -5,7 +5,7 @@ const Club = require('./club.js');
 const allCommands = require('./commands.json');
 
 const master = new GoogleSpreadsheet(process.env.SHEET_ID);
-var rows, clubs = {}, cids, flag = 0;
+var rows, clubs = {}, cids = [], flag = 0;
 
 (async function init () {
     await master.useServiceAccountAuth({

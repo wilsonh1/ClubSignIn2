@@ -75,11 +75,12 @@ function processMessage (event) {
     let uid = event.sender.id, message = event.message;
 
     console.log(flag);
-    if (flag != rows.length * 2) {
+    if (!rows || flag != rows.length * 2) {
         sendMessage(uid, 'Bot is waking up, please try again in a few seconds.')
         return;
     }
 
+    console.log(message.mid);
     const notRecognized = 'Message not recognized. Send "member help" or "admin help" for a list of valid commands.';
 
     if (!message.text)

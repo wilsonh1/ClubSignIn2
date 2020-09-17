@@ -120,8 +120,6 @@ class Club {
         if (i == -1) {
             let nrow = await this.sheet.addRow({'User ID': uid, 'Name': name});
             n = nrow._rowNumber;
-            nrow.total = '=sum(F' + n + ':Z' + n + ')';
-            await nrow.save();
             this.ids.push(uid);
             this.rows.push(nrow);
         } else
@@ -133,6 +131,8 @@ class Club {
             return 3;
         cell.value = 1;
         await this.sheet.saveUpdatedCells();
+        this.rows[i].total = '=sum(F' + n + ':Z' + n + ')';
+        await this.rows[i].save();
 
         console.log(uid);
         return (i == -1) ? 1 : 0;

@@ -72,7 +72,6 @@ app.get('/webhook', function (req, res) {
 function processMessage (event) {
     if (event.message.is_echo)
         return;
-    console.log(event);
     let uid = event.sender.id, message = event.message;
 
     if (flag != rows.length * 2) {
@@ -84,6 +83,8 @@ function processMessage (event) {
 
     if (!message.text)
         sendMessage(uid, notRecognized);
+    else if (message.reply_to)
+        console.log(message.reply_to.mid);
     else {
         let str = message.text.toLowerCase().split(' ');
         let orig = message.text.split(' ');
@@ -109,6 +110,7 @@ function processMessage (event) {
         let cid = (str[0][0] == '!') ? str[0].substring(1) : str[1];
         if (!cid) {
             sendMessage(uid, notRecognized);
+            return;
         } else if (!cids.includes(cid)) {
             sendMessage(uid, 'Club ID not recognized. Send "clubs" for a list of club IDs.');
             return;
@@ -235,7 +237,7 @@ function processQueue () {
                 sendMessage(r.uid, 'Invalid club password.');
                 processQueue();
             } else {
-                updateMaster(r.cid, 'admin', r.args[0]).then(function(ret) {
+                updateMaster(r.cid, 'admin', r.uid).then(function(ret) {
                     sendMessage(r.uid, 'You are now the admin of ' + r.cid + ' club.');
                     processQueue();
                 });

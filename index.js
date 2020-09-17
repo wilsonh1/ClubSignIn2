@@ -117,17 +117,19 @@ function processMessage (event) {
                 queueRequest({command: 1, cid: cid, uid: uid, args: [str[2], str[3]]});
             else if (admin.includes(str[2]))
                 queueRequest({command: 2, cid: cid, uid: uid, args: [str[2], str[3]]});
+            else if (str[2] == 'key')
+                queueRequest({command: 3, cid: cid, uid: uid, args: [str[3]]});
             else
                 sendMessage(uid, notRecognized);
         } else if (str[0] == 'check') {
             if (member.includes(str[2]))
-                queueRequest({command: 3, cid: cid, uid: uid, args: [str[2]]});
-            else if (str[2] == 'key' || admin.includes(str[2]))
                 queueRequest({command: 4, cid: cid, uid: uid, args: [str[2]]});
+            else if (str[2] == 'key' || admin.includes(str[2]))
+                queueRequest({command: 5, cid: cid, uid: uid, args: [str[2]]});
             else
                 sendMessage(uid, notRecognized);
         } else if (str[0] == 'readmin') {
-            queueRequest({command: 5, uid: uid, args: [str[2]]});
+            queueRequest({command: 6, uid: uid, args: [str[2]]});
         } else {
             sendMessage(uid, notRecognized);
         }
@@ -150,7 +152,7 @@ function processQueue () {
         return;
     }
 
-    let r = queue.shift;
+    let r = queue.shift();
     console.log(r);
     switch(r.command) {
         case 0: {
@@ -196,6 +198,17 @@ function processQueue () {
             }
         } break;
         case 3: {
+            clubs[r.cid].updateKey(r.uid, r.args[0], r.args[1]).then(function(ret) {
+                if (!ret)
+                    sendMessage(r.uid, 'Requires admin permissions.');
+                else if (ret == 1)
+                    sendMessage(r.uid, 'Key updated.');
+                else
+                    sendMessage(r.uid, 'Keys must be unique.');
+                processQueue();
+            });
+        } break;
+        case 4: {
             let ret = clubs[r.cid].queryMember(r.uid, r.args[0]);
             if (ret === 0)
                 sendMessage(r.uid, 'Not found.');
@@ -203,7 +216,7 @@ function processQueue () {
                 sendMessage(r.uid, ret);
             processQueue();
         } break;
-        case 4: {
+        case 5: {
             let ret = clubs[r.cid].queryClub(r.uid, r.args[0]);
             if (ret === 0)
                 sendMessage(r.uid, 'Requires admin permissions.');
@@ -211,7 +224,7 @@ function processQueue () {
                 sendMessage(r.uid, ret);
             processQueue();
         } break;
-        case 5: {
+        case 6: {
             let up = clubs[r.cid].updateAdmin(r.uid, r.args[0]);
             if (!up) {
                 sendMessage(r.uid, 'Invalid club password.');

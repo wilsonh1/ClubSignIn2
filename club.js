@@ -42,6 +42,8 @@ class Club {
     queryClub (uid, field) {
         if (uid != this.admin)
             return 0;
+        if (field == 'key')
+            return this.keys[this.keys.length - 1];
         return this[field];
     }
 

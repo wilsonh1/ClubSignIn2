@@ -72,6 +72,7 @@ app.get('/webhook', function (req, res) {
 function processMessage (event) {
     if (event.message.is_echo)
         return;
+    console.log(event);
     let uid = event.sender.id, message = event.message;
 
     if (flag != rows.length * 2) {
@@ -159,7 +160,7 @@ function processQueue () {
     console.log(r);
     switch(r.command) {
         case 0: {
-            getName(uid, function(name) {
+            getName(r.uid, function(name) {
                 clubs[r.cid].signIn(r.uid, r.args[0], name).then(function(ret) {
                     switch(ret) {
                         case 0:

@@ -89,6 +89,8 @@ function processMessage (event) {
         let str = message.text.toLowerCase().split(' ');
         let orig = message.text.split(' ');
 
+        if (str.length > 4)
+            sendMessage(uid, notRecognized);
         if (str[0] == 'clubs') {
             for (let i = 0; i < cids.length; i++)
                 sendMessage(uid, cids[i]);
@@ -112,14 +114,17 @@ function processMessage (event) {
         }
 
         const member = ['email', 'grade', 'total']
-        const admin = ['pwd', 'sheet', 'client_email', 'private_key'];
+        const admin = ['pwd', 'sheet', 'client_email', 'private_key', 'key'];
 
         let cid = (str[0][0] == '!') ? str[0].substring(1) : str[1];
         if (!cid) {
             sendMessage(uid, notRecognized);
             return;
         } else if (!cids.includes(cid)) {
-            sendMessage(uid, 'Club ID not recognized. Send "clubs" for a list of club IDs.');
+            if (['!' + cid, 'update', 'check', 'readmin'].includes(str[0]))
+                sendMessage(uid, 'Club ID not recognized. Send "clubs" for a list of club IDs.');
+            else
+                sendMessage(uid, notRecognized);
             return;
         }
 
@@ -128,7 +133,7 @@ function processMessage (event) {
         } else if (str[0] == 'update') {
             if (member.includes(str[2]) && str[2] != 'total')
                 queueRequest({command: 1, cid: cid, uid: uid, args: [str[2], orig[3]]});
-            else if (admin.includes(str[2]))
+            else if (admin.includes(str[2]) && str[2] != 'key')
                 queueRequest({command: 2, cid: cid, uid: uid, args: [str[2], orig[3]]});
             else if (str[2] == 'key')
                 queueRequest({command: 3, cid: cid, uid: uid, args: [orig[3]]});
@@ -137,7 +142,7 @@ function processMessage (event) {
         } else if (str[0] == 'check') {
             if (member.includes(str[2]))
                 queueRequest({command: 4, cid: cid, uid: uid, args: [str[2]]});
-            else if (str[2] == 'key' || admin.includes(str[2]))
+            else if (admin.includes(str[2]))
                 queueRequest({command: 5, cid: cid, uid: uid, args: [str[2]]});
             else
                 sendMessage(uid, notRecognized);

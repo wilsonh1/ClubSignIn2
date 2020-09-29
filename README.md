@@ -17,7 +17,7 @@
 
 - Upon registering your club, message `readmin [club id] [password]` to claim admin access. Admins have permission to update/check club info (see [commands](commands.md)).
 
-- This bot updates the attendance sheet automatically. I would advise against updating the sheet manually, as values are cached in the bot and may not be updated.
+- This bot updates the attendance sheet automatically. I would advise against updating the sheet manually, as values are cached in the bot and may cause conflicts.
 
 ## Commands
 - For a full list of commands along with descriptions, see [commands](commands.md)
